@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подготовка к ЕНТ: История искусств</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="screen-main" class="screen active">
+        <h1>ЕНТ | История искусств</h1>
+        <p class="subtitle">Интерактивный тренажер для подготовки</p>
+        <div class="menu-buttons">
+            <button class="btn main-btn" onclick="showScreen('screen-themes')">Выбрать тему</button>
+            <button class="btn main-btn special" onclick="startFullExam()">Пробный ЕНТ (50 вопросов)</button>
+        </div>
+    </div>
+
+    <div id="screen-themes" class="screen">
+        <button class="btn back-btn" onclick="showScreen('screen-main')">← В меню</button>
+        <h2>Выберите тему для практики</h2>
+        <div id="themes-grid" class="themes-grid"></div>
+    </div>
+
+    <div id="screen-quiz" class="screen">
+        <div class="quiz-header">
+            <span id="quiz-title">Тестирование</span>
+            <button class="btn exit-btn" onclick="confirmExit()">Прервать</button>
+        </div>
+
+        <div id="quiz-navigation" class="nav-panel"></div>
+
+        <div class="quiz-body">
+            <div id="question-meta" class="question-meta">Вопрос 1 из 10</div>
+            <div id="question-text" class="question-text">Текст вопроса</div>
+            
+            <div id="situational-container" class="image-container hidden">
+                <img id="situational-image" src="" alt="Иллюстрация к вопросу">
+            </div>
+
+            <div id="answers-container" class="answers-container"></div>
+        </div>
+
+        <div class="quiz-footer">
+            <button id="btn-submit-multiple" class="btn hidden" onclick="saveMultipleAnswer()">Подтвердить ответ</button>
+            <button id="btn-finish-quiz" class="btn hidden finish-btn" onclick="finishQuiz()">Завершить тест</button>
+        </div>
+    </div>
+
+    <div id="screen-results" class="screen">
+        <h2>Результаты тестирования</h2>
+        <div class="result-card">
+            <div class="score-circle">
+                <span id="res-score">0/0</span>
+                <p>Баллы</p>
+            </div>
+            <div id="res-percent" class="res-stat">Процент: 0%</div>
+            <div id="res-detailed" class="res-stat"></div>
+        </div>
+        <div class="result-actions">
+            <button class="btn main-btn" onclick="renderAllResults(); showScreen('screen-all-results')">Детальные результаты</button>
+            <button class="btn main-btn" onclick="showScreen('screen-main')">На главную</button>
+        </div>
+    </div>
+
+    <div id="screen-all-results" class="screen">
+        <button class="btn back-btn" onclick="showScreen('screen-results')">← Назад к итогам</button>
+        <h2>Результаты по всем вопросам</h2>
+        <div id="all-results-list" class="all-results-list"></div>
+        <div class="result-actions">
+            <button class="btn main-btn" onclick="showScreen('screen-main')">На главную</button>
+        </div>
+    </div>
+
+    <script src="questions.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
