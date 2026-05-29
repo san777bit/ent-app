@@ -207,9 +207,21 @@ function loadQuestion(index) {
             };
 
             label.appendChild(radio);
-            label.appendChild(document.createTextNode(opt));
-            answersContainer.appendChild(label);
+        label.appendChild(document.createTextNode(opt));
+        answersContainer.appendChild(label);
         });
+    }
+
+    const nextBtn = document.getElementById("btn-next-question");
+    nextBtn.classList.toggle("hidden", index >= quizQuestions.length - 1);
+}
+
+function goToNextQuestion() {
+    saveCurrentState();
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+        currentQuestionIndex++;
+        updateNavActiveHighlight();
+        loadQuestion(currentQuestionIndex);
     }
 }
 

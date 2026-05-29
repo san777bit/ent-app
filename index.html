@@ -26,7 +26,7 @@
     <div id="screen-quiz" class="screen">
         <div class="quiz-header">
             <span id="quiz-title">Тестирование</span>
-            <button class="btn exit-btn" onclick="confirmExit()">Прервать</button>
+            <button id="btn-finish-quiz" class="btn finish-btn hidden" onclick="finishQuiz()">Завершить тест</button>
         </div>
 
         <div id="quiz-navigation" class="nav-panel"></div>
@@ -44,7 +44,7 @@
 
         <div class="quiz-footer">
             <button id="btn-submit-multiple" class="btn hidden" onclick="saveMultipleAnswer()">Подтвердить ответ</button>
-            <button id="btn-finish-quiz" class="btn hidden finish-btn" onclick="finishQuiz()">Завершить тест</button>
+            <button id="btn-next-question" class="btn hidden finish-btn" onclick="goToNextQuestion()">Следующая страница</button>
         </div>
     </div>
 

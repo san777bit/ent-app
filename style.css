@@ -116,6 +116,11 @@ h2 {
     font-size: 0.95rem;
 }
 
+#btn-finish-quiz {
+    background: #ef4444;
+    color: white;
+}
+
 .finish-btn {
     background: var(--accent);
     color: white;
@@ -193,6 +198,16 @@ h2 {
     padding-bottom: 12px;
     border-bottom: 1px solid rgba(255,255,255,0.08);
     font-weight: 700;
+}
+
+.quiz-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.quiz-footer .btn {
+    width: auto;
 }
 
 .question-meta {
