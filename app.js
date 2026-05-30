@@ -66,26 +66,26 @@ function startThemeQuiz(themeName) {
     initQuiz();
 }
 
-// ЗАПУСК: Пробный ЕНТ (50 вопросов)
+// ЗАПУСК: Пробный ЕНТ (40 вопросов, 50 баллов)
 function startFullExam() {
     currentQuizType = "exam";
-    
-    // 1. 1-20: Одиночные (случайные из всей базы)
+
+    // 1. 1-20: Одиночные (случайные из всей базы) — 20 баллов
     const part1 = shuffle([...singleChoiceQuestions]).slice(0, 20);
-    
-    // 2. 21-40: Множественный выбор
-    const part2 = shuffle([...multipleChoiceQuestions]).slice(0, 20);
-    
-    // 3. 41-50: Ситуационные — 2 темы по 5 подряд взятых вопросов
+
+    // 2. 21-30: Множественный выбор — 20 баллов (по 2 балла каждый)
+    const part2 = shuffle([...multipleChoiceQuestions]).slice(0, 10);
+
+    // 3. 31-40: Ситуационные — 10 баллов (2 темы по 5 вопросов)
     const situationalGroups = shuffle(groupSituationalQuestions()).filter(group => group.length >= 5);
     const part3 = situationalGroups.length >= 2
         ? situationalGroups.slice(0, 2).flatMap(group => group.slice(0, 5))
         : shuffle([...situationalQuestions]).slice(0, 10);
-    
+
     quizQuestions = [...part1, ...part2, ...part3];
-    
-    if(quizQuestions.length < 50) {
-         alert(`Внимание! В базе недостаточно вопросов для полного ЕНТ (Всего собрано: ${quizQuestions.length}/50). Добавьте вопросы в базу.`);
+
+    if(quizQuestions.length < 40) {
+         alert(`Внимание! В базе недостаточно вопросов для полного ЕНТ (Всего собрано: ${quizQuestions.length}/40). Добавьте вопросы в базу.`);
     }
     
     initQuiz();
