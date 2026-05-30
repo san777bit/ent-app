@@ -13,7 +13,8 @@
         <p class="subtitle">Интерактивный тренажер для подготовки</p>
         <div class="menu-buttons">
             <button class="btn main-btn" onclick="showScreen('screen-themes')">Выбрать тему</button>
-            <button class="btn main-btn special" onclick="startFullExam()">Пробный ЕНТ (50 вопросов)</button>
+            <button class="btn main-btn special" onclick="showExamOptions()">Пробный ЕНТ</button>
+            <button class="btn main-btn" onclick="startFullExam()">Полный рандом</button>
         </div>
     </div>
 
@@ -21,6 +22,24 @@
         <button class="btn back-btn" onclick="showScreen('screen-main')">← В меню</button>
         <h2>Выберите тему для практики</h2>
         <div id="themes-grid" class="themes-grid"></div>
+    </div>
+
+    <div id="screen-exam-options" class="screen">
+        <button class="btn back-btn" onclick="showScreen('screen-main')">← В меню</button>
+        <h2>Настройка пробного ЕНТ</h2>
+        <p>Выберите темы, которые будут иметь приоритет для первых двух частей. Для третьей части выберите темы ситуационных вопросов.</p>
+        <div class="option-group">
+            <h3>Приоритетные темы для частей 1 и 2</h3>
+            <div id="priority-themes-list" class="themes-grid"></div>
+        </div>
+        <div class="option-group">
+            <h3>Темы для ситуационных вопросов</h3>
+            <div id="situational-themes-list" class="themes-grid"></div>
+        </div>
+        <div class="result-actions">
+            <button class="btn main-btn special" onclick="startExamWithSelectedThemes()">Начать пробный ЕНТ</button>
+            <button class="btn main-btn" onclick="startFullExam()">Полный рандом</button>
+        </div>
     </div>
 
     <div id="screen-quiz" class="screen">

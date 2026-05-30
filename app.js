@@ -5,6 +5,62 @@ let userAnswers = {}; // Хранилище вида { индекс_вопрос
 let currentQuestionIndex = 0;
 const THEMES = Array.from(new Set(singleChoiceQuestions.map(q => q.theme)));
 
+const SITUATIONAL_THEME_MAP = {
+    "public/images/sit31.jpg": "Первобытное искусство",
+    "public/images/sit32.jpg": "Древний Египет",
+    "public/images/sit33.jpg": "Крито-Минойская цивилизация",
+    "public/images/sit34.jpg": "Древняя Греция",
+    "public/images/sit35.jpg": "Древний Рим",
+    "public/images/sit36.jpg": "Средневековье и готика",
+    "public/images/sit37.jpg": "Эпоха Возрождения",
+    "public/images/sit38.jpg": "Искусство барокко",
+    "public/images/sit39.jpg": "Классицизм и Рококо",
+    "public/images/sit40.jpg": "Романтизм и Реализм",
+    "public/images/sit41.jpg": "Русское искусство",
+    "public/images/sit42.jpg": "Виды и жанры ИЗО",
+    "public/images/sit43.jpg": "Искусство Казахстана",
+    "public/images/sit44.jpg": "Первобытное искусство",
+    "public/images/sit45.jpg": "Древний Египет",
+    "public/images/sit46.jpg": "Крито-Минойская цивилизация",
+    "public/images/sit47.jpg": "Древняя Греция",
+    "public/images/sit48.jpg": "Древний Рим",
+    "public/images/sit49.jpg": "Средневековье и готика",
+    "public/images/sit50.jpg": "Эпоха Возрождения",
+    "public/images/sit51.jpg": "Искусство барокко",
+    "public/images/sit52.jpg": "Классицизм и Рококо",
+    "public/images/sit53.jpg": "Классицизм и Рококо",
+    "public/images/sit54.jpg": "Русское искусство",
+    "public/images/sit55.jpg": "Виды и жанры ИЗО",
+    "public/images/sit56.jpg": "Искусство Казахстана"
+};
+
+const SITUATIONAL_THEMES = Array.from(new Set(Object.values(SITUATIONAL_THEME_MAP)));
+
+const MULTIPLE_CHOICE_THEME_RANGES = [
+    { theme: "Первобытное искусство", minId: 391, maxId: 393 },
+    { theme: "Древний Египет", minId: 394, maxId: 397 },
+    { theme: "Крито-Минойская цивилизация", minId: 398, maxId: 400 },
+    { theme: "Древняя Греция", minId: 401, maxId: 404 },
+    { theme: "Древний Рим", minId: 405, maxId: 408 },
+    { theme: "Средневековье и готика", minId: 409, maxId: 412 },
+    { theme: "Эпоха Возрождения", minId: 413, maxId: 416 },
+    { theme: "Искусство барокко", minId: 417, maxId: 420 },
+    { theme: "Рококо и Романтизм", minId: 421, maxId: 424 },
+    { theme: "Классицизм", minId: 425, maxId: 428 },
+    { theme: "Русское искусство", minId: 429, maxId: 432 },
+    { theme: "Виды и жанры ИЗО", minId: 433, maxId: 436 },
+    { theme: "Искусство Казахстана", minId: 437, maxId: 440 }
+];
+
+function getMultipleChoiceQuestionTheme(question) {
+    const range = MULTIPLE_CHOICE_THEME_RANGES.find(r => question.id >= r.minId && question.id <= r.maxId);
+    return range ? range.theme : "";
+}
+
+function getSituationalQuestionTheme(question) {
+    return SITUATIONAL_THEME_MAP[question.image] || "";
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     renderThemesGrid();
 });
@@ -25,6 +81,89 @@ function renderThemesGrid() {
         card.onclick = () => startThemeQuiz(theme);
         grid.appendChild(card);
     });
+}
+
+function showExamOptions() {
+    renderExamOptions();
+    showScreen("screen-exam-options");
+}
+
+function renderExamOptions() {
+    renderThemeSelection("priority-themes-list", THEMES);
+    renderThemeSelection("situational-themes-list", SITUATIONAL_THEMES);
+}
+
+function renderThemeSelection(containerId, themes) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+
+    themes.forEach(theme => {
+        const label = document.createElement("label");
+        label.className = "theme-card selectable";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.value = theme;
+        checkbox.className = "theme-checkbox";
+
+        checkbox.onchange = () => {
+            label.classList.toggle("selected", checkbox.checked);
+        };
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(theme));
+        container.appendChild(label);
+    });
+}
+
+function getSelectedThemes(containerId) {
+    return Array.from(document.querySelectorAll(`#${containerId} input[type='checkbox']:checked`)).map(cb => cb.value);
+}
+
+function selectQuestionsByPriority(questions, selectedThemes, count, getTheme) {
+    if (selectedThemes.length === 0) {
+        return shuffle([...questions]).slice(0, count);
+    }
+
+    const preferred = questions.filter(q => selectedThemes.includes(getTheme(q)));
+    const selectedPreferred = shuffle(preferred).slice(0, count);
+    if (selectedPreferred.length === count) {
+        return selectedPreferred;
+    }
+
+    const remaining = shuffle(questions.filter(q => !selectedPreferred.includes(q))).slice(0, count - selectedPreferred.length);
+    return [...selectedPreferred, ...remaining];
+}
+
+function startExamWithSelectedThemes() {
+    currentQuizType = "exam";
+
+    const priorityThemes = getSelectedThemes("priority-themes-list");
+    const situationalPriority = getSelectedThemes("situational-themes-list");
+
+    const part1 = selectQuestionsByPriority(singleChoiceQuestions, priorityThemes, 20, q => q.theme);
+    const part2 = selectQuestionsByPriority(multipleChoiceQuestions, priorityThemes, 10, getMultipleChoiceQuestionTheme);
+
+    const situationalGroups = groupSituationalQuestions();
+    const preferredGroups = situationalPriority.length > 0
+        ? shuffle(situationalGroups).filter(group => situationalPriority.includes(getSituationalQuestionTheme(group[0])))
+        : [];
+
+    let part3 = [];
+    if (preferredGroups.length >= 2) {
+        part3 = preferredGroups.slice(0, 2).flatMap(group => group.slice(0, 5));
+    } else {
+        const otherGroups = shuffle(situationalGroups.filter(group => !preferredGroups.includes(group)));
+        part3 = [...preferredGroups, ...otherGroups].slice(0, 2).flatMap(group => group.slice(0, 5));
+    }
+
+    quizQuestions = [...part1, ...part2, ...part3];
+
+    if (quizQuestions.length < 40) {
+        alert(`В базе недостаточно вопросов для полного ЕНТ (Всего собрано: ${quizQuestions.length}/40). Добавьте вопросы в базу.`);
+    }
+
+    initQuiz();
 }
 
 // Вспомогательная функция перемешивания массива (Fisher-Yates)

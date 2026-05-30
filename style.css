@@ -153,6 +153,27 @@ h2 {
     color: var(--primary);
 }
 
+.theme-card.selectable {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 18px 22px;
+    text-align: left;
+}
+
+.theme-card.selectable input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--primary);
+}
+
+.theme-card.selected {
+    background: rgba(251, 146, 60, 0.2);
+    border-color: rgba(251, 146, 60, 0.55);
+    color: var(--primary);
+}
+
 .nav-panel {
     display: flex;
     flex-wrap: wrap;
