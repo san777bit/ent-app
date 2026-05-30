@@ -31,7 +31,9 @@ const SITUATIONAL_THEME_MAP = {
     "public/images/sit53.jpg": "Классицизм и Рококо",
     "public/images/sit54.jpg": "Русское искусство",
     "public/images/sit55.jpg": "Виды и жанры ИЗО",
-    "public/images/sit56.jpg": "Искусство Казахстана"
+    "public/images/sit56.jpg": "Искусство Казахстана",
+    "public/images/sit57.jpg": "Искусство XIX–XX века",
+    "public/images/sit58.jpg": "Искусство XIX–XX века"
 };
 
 const SITUATIONAL_THEMES = Array.from(new Set(Object.values(SITUATIONAL_THEME_MAP)));
@@ -49,7 +51,8 @@ const MULTIPLE_CHOICE_THEME_RANGES = [
     { theme: "Классицизм", minId: 425, maxId: 428 },
     { theme: "Русское искусство", minId: 429, maxId: 432 },
     { theme: "Виды и жанры ИЗО", minId: 433, maxId: 436 },
-    { theme: "Искусство Казахстана", minId: 437, maxId: 440 }
+    { theme: "Искусство Казахстана", minId: 437, maxId: 440 },
+    { theme: "Искусство XIX–XX века", minId: 635, maxId: 639 }
 ];
 
 function getMultipleChoiceQuestionTheme(question) {
